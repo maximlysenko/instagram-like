@@ -1,61 +1,81 @@
 document.addEventListener("DOMContentLoaded", () => {
     const root = document.getElementById("root");
+    const signInPage = createSignPage();
 
-    const SignInPage = {
-        createSignInFormInput(inputObject) {
-            const input = document.createElement("input");
-            input.type = inputObject.type;
+    signInPage.render(root);
 
-            if (typeof inputObject.value !== "undefined") {
-                input.value = inputObject.value;
-            }
+    setTimeout(() => {
+        signInPage.remove();
+    }, 3000);
+});
 
-            if (typeof inputObject.placeholder !== "undefined") {
-                input.placeholder = inputObject.placeholder;
-            }
+function createSignPage() {
+    const pageContainer = createPageContainer();
+    const signInForm = createSignInForm({ onSubmit: handleSubmit });
 
-            if (typeof inputObject.name !== "undefined") {
-                input.name = inputObject.name;
-            }
+    function createPageContainer() {
+        const pageContainer = document.createElement("div");
 
-            return input;
-        },
-        createSignForm() {
-            const signInForm = document.createElement("form");
-            const emailInput = this.createSignInFormInput({ type: "email", placeholder: "Email", name: "email" });
-            const passwordInput = this.createSignInFormInput({ type: "password", placeholder: "Password", name: "password" });
-            const submitButton = this.createSignInFormInput({ type: "submit", value: "Log in" });
+        pageContainer.id = "sign-in-page-container";
+        pageContainer.classList.add("container");
 
-            signInForm.addEventListener("submit", (event) => {
-                event.preventDefault();
+        return pageContainer;
+    }
 
-                const fields = event.target.querySelectorAll("input[type=email], input[type=password]");
-                const values = {};
-                
-                fields.forEach((field) => {
-                    values[field.name] = field.value;
-                });
+    function handleSubmit(event) {
+        event.preventDefault();
 
-                console.log("values", values);
-                // Make an HTTP request with form values.
-            });
+        const fields = event.target.querySelectorAll("input[type=email], input[type=password]");
+        const values = {};
+        
+        fields.forEach((field) => {
+            values[field.name] = field.value;
+        });
 
-            signInForm.appendChild(emailInput);
-            signInForm.appendChild(passwordInput);
-            signInForm.appendChild(submitButton);
+        console.log("values", values);
+    }
 
-            return signInForm;
-        },
+    return {
         render(container) {
-            const signInPageContainer = document.createElement("div");
-            signInPageContainer.id = "sign-in-page-container";
-
-            const signInForm = this.createSignForm();
-
-            signInPageContainer.appendChild(signInForm);
-            container.appendChild(signInPageContainer);
+            signInForm.render(pageContainer);
+            container.appendChild(pageContainer);
+        },
+        remove() {
+            signInForm.remove();
+            pageContainer.remove();
+            console.log("After remove", signInForm);
         },
     };
+}
 
-    SignInPage.render(root);
-});
+function createSignInForm({ onSubmit }) {
+    const signInForm = document.createElement("form");
+    const emailInput = createSignInFormInput({ type: "email", placeholder: "Email", name: "email" });
+    const passwordInput = createSignInFormInput({ type: "password", placeholder: "Password", name: "password" });
+    const submitButton = createSignInFormInput({ type: "submit", value: "Log in" });
+
+    signInForm.appendChild(emailInput);
+    signInForm.appendChild(passwordInput);
+    signInForm.appendChild(submitButton);
+
+    function createSignInFormInput(attributesObject) {
+        const input = document.createElement("input");
+
+        Object.keys(attributesObject).forEach((attributeName) => {
+            input.setAttribute(attributeName, attributesObject[attributeName]);
+        });
+
+        return input;
+    };
+
+    return {
+        render(container) {
+            signInForm.addEventListener("submit", onSubmit);
+            container.appendChild(signInForm);
+        },
+        remove() {
+            signInForm.removeEventListener("submit", onSubmit);
+            signInForm.remove();
+        },
+    };
+}

@@ -4,6 +4,31 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <style>
+        .carousel-image {
+            display: block;
+        }
+
+        .carousel-image-container {
+            height: 100%;
+            left: 0;
+            opacity: 0;
+            position: absolute;
+            top: 0;
+            transition: opacity 400ms ease-in-out;
+            width: 100%;
+        }
+
+        .carousel-image-container-visible {
+            opacity: 1;
+        }
+
+        .carousel-container {
+            height: 427px;
+            position: relative;
+            width: 240px;
+        }
+    </style>
     <script src="./src/index.js"></script>
 </head>
 <body>

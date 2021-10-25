@@ -1,0 +1,23 @@
+{
+  "name": "instagram-like",
+  "version": "0.1.0",
+  "description": "Very light version of the Instagram app",
+  "main": "index.js",
+  "scripts": {
+    "build": "rimraf dist && esbuild src/index.js --bundle --minify --sourcemap --outdir=dist"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/maximlysenko/instagram-like.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/maximlysenko/instagram-like/issues"
+  },
+  "homepage": "https://github.com/maximlysenko/instagram-like#readme",
+  "devDependencies": {
+    "esbuild": "^0.13.9",
+    "rimraf": "^3.0.2"
+  }
+}

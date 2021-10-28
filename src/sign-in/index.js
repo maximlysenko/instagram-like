@@ -26,6 +26,8 @@ export default function createSignPage() {
         });
 
         console.log("values", values);
+
+        router.go("home", true);
     }
 
     return {

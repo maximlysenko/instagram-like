@@ -1,13 +1,13 @@
 import SignInPage from "../sign-in";
 
-export const APP_ROUTES = {
-    "sign-in": {
+export const APP_ROUTES = [
+    {
         id: "sign-in",
         url: "/sign-in",
         page: SignInPage,
         title: "Sign In | Instagram",
     },
-    "home": {
+    {
         id: "home",
         url: "/",
         page: {
@@ -20,4 +20,4 @@ export const APP_ROUTES = {
         },
         title: "Home | Instagram",
     },
-};
+];

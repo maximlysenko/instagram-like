@@ -1,19 +1,22 @@
 export default function createRouter(routes, HTMLContainer) {
-    const routesList = Object.keys(routes).map((key) => routes[key]);
     let currentRoute = null;
 
     window.addEventListener("popstate", (event) => {
         removeCurrentPage();
 
         if (event.state !== null) {
-            renderRoute(routes[event.state.id]);
+            renderRoute(findRouteById(event.state.id));
         } else {
             renderRoute(findRouteByPathname(window.location.pathname));
         }
     });
 
     function findRouteByPathname(pathname) {
-        return routesList.find((route) => route.url === pathname);
+        return routes.find(route => route.url === pathname);
+    }
+
+    function findRouteById(routeId) {
+        return routes.find(route => route.id === routeId);
     }
 
     function removeCurrentPage() {
@@ -26,11 +29,11 @@ export default function createRouter(routes, HTMLContainer) {
     function renderRouteWithHistoryChange(routeObject, replace = false) {
         renderRoute(routeObject);
 
-        const method = replace 
+        const pushOrReplaceState = replace 
             ? window.history.replaceState.bind(window.history) 
             : window.history.pushState.bind(window.history);
 
-        method({ id: routeObject.id }, routeObject.title, routeObject.url);
+        pushOrReplaceState({ id: routeObject.id }, routeObject.title, routeObject.url);
     }
 
     function renderRoute(routeObject) {
@@ -46,14 +49,14 @@ export default function createRouter(routes, HTMLContainer) {
     return {
         init(pathname) {
             if (currentRoute !== null) {
-                throw new Error(`Current route is ${currentRoute.id}. Router cannot be init twice.`);
+                throw new Error(`Current route is ${currentRoute.id}. Router cannot be initialized twice.`);
             }
 
             renderRouteWithHistoryChange(findRouteByPathname(pathname));
         },
         go(routeId, replace) {
             removeCurrentPage();
-            renderRouteWithHistoryChange(routes[routeId], replace);
+            renderRouteWithHistoryChange(findRouteById(routeId), replace);
         },
     };
 }

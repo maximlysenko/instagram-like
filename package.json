@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "cleanup-dist": "rimraf dist",
-    "build:esbuild": "npm run cleanup-dist && esbuild src/index.js --bundle --minify --outdir=dist",
+    "build:esbuild": "npm run cleanup-dist && esbuild src/index.js --bundle --minify --loader:.jpg=file --public-path=/dist --outdir=dist",
     "watch:esbuild": "npm run cleanup-dist && esbuild src/index.js --bundle --minify --outdir=dist --sourcemap --watch",
     "build:webpack": "webpack",
     "watch:webpack": "webpack --watch"

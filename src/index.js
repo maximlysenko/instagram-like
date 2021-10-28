@@ -5,8 +5,4 @@ document.addEventListener("DOMContentLoaded", () => {
     const signInPage = createSignPage();
 
     signInPage.render(root);
-
-    // setTimeout(() => {
-    //     signInPage.remove();
-    // }, 3000);
 });

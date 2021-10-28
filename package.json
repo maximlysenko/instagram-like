@@ -4,7 +4,7 @@
   "description": "Very light version of the Instagram app",
   "main": "index.js",
   "scripts": {
-    "build": "rimraf dist && esbuild src/index.js --bundle --minify --sourcemap --outdir=dist"
+    "build:esbuild": "rimraf dist && esbuild src/index.js --bundle --minify --sourcemap --outdir=dist"
   },
   "repository": {
     "type": "git",

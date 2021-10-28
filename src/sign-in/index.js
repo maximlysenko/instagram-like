@@ -1,7 +1,8 @@
 import createCarouselContainer from "./carousel";
 import createSignInForm from "./form";
+import { router } from "../index";
 
-export default function createSignPage() {
+function createSignInPage() {
     const pageContainer = createPageContainer();
     const signInForm = createSignInForm({ onSubmit: handleSubmit });
     const carouselContainer = createCarouselContainer();
@@ -27,7 +28,7 @@ export default function createSignPage() {
 
         console.log("values", values);
 
-        router.go("home", true);
+        router.go("home");
     }
 
     return {
@@ -35,12 +36,15 @@ export default function createSignPage() {
             carouselContainer.render(pageContainer);
             signInForm.render(pageContainer);
             container.appendChild(pageContainer);
+            console.log("Rendered Sign In");
         },
         remove() {
             carouselContainer.remove();
             signInForm.remove();
             pageContainer.remove();
-            console.log("After remove", signInForm);
+            console.log("Removed Sign In");
         },
     };
 }
+
+export default createSignInPage();

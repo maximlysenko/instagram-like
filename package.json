@@ -8,7 +8,8 @@
     "build:esbuild": "npm run cleanup-dist && esbuild src/index.js --bundle --minify --loader:.jpg=file --public-path=/dist --outdir=dist",
     "watch:esbuild": "npm run cleanup-dist && esbuild src/index.js --bundle --minify --outdir=dist --sourcemap --watch",
     "build:webpack": "webpack",
-    "watch:webpack": "webpack --watch"
+    "watch:webpack": "webpack --watch",
+    "dev-server": "live-server --entry-file=index.html --watch=dist"
   },
   "repository": {
     "type": "git",
@@ -22,6 +23,7 @@
   "homepage": "https://github.com/maximlysenko/instagram-like#readme",
   "devDependencies": {
     "esbuild": "^0.13.9",
+    "live-server": "^1.1.0",
     "rimraf": "^3.0.2",
     "webpack": "^5.60.0",
     "webpack-cli": "^4.9.1"

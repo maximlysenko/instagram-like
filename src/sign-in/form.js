@@ -1,6 +1,6 @@
 import { createElement } from "../utils";
 
-export default function createSignInForm({ onSubmit }) {
+export default function createSignInFormObject({ onSubmit }) {
     const emailInput = createElement(
         "input",
         { type: "email", placeholder: "Email", name: "email" },

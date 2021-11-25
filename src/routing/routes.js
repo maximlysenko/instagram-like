@@ -1,4 +1,5 @@
 import SignInPage from "../sign-in";
+import Home from "../home";
 
 export const APP_ROUTES = [
     {
@@ -10,14 +11,7 @@ export const APP_ROUTES = [
     {
         id: "home",
         url: "/",
-        page: {
-            render() {
-                console.log("Rendered Home");
-            },
-            remove() {
-                console.log("Removed Home");
-            },
-        },
+        page: Home,
         title: "Home | Instagram",
     },
 ];

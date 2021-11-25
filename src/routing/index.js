@@ -12,7 +12,13 @@ export default function createRouter(routes, HTMLContainer) {
     });
 
     function findRouteByPathname(pathname) {
-        return routes.find(route => route.url === pathname);
+        const found = routes.find(route => route.url === pathname);
+
+        if (!found) {
+            return routes.find(route => route.id === "sign-in");
+        }
+
+        return found;
     }
 
     function findRouteById(routeId) {

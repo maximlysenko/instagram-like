@@ -1,45 +1,47 @@
 import { fetchPosts } from "./requests";
+import { POSTS_SECTION_SCROLL_THRESHOLD } from "./constants";
 
-function createPostsSectionObject() {
+export default function createPostsSectionObject() {
     const postsContainer = document.createElement("div");
-    postsContainer.style.height = "1500px";
 
-    const postsResult = {
-        posts: [],
-        totalElements: 0,
+    const state = {
+        postsResult: {
+            posts: [],
+            totalElements: 0,
+        },
+        fetchingPosts: false,
     };
-    let fetchingPosts = false;
 
     /**
      * Колбек для скролінгу
      * Викликаєтсья кожен раз, коли скролимо вікно на 1px
      * Тут наша задача перевірити:
-     * 1. Що ми проскролили до відповідної точки (розглянемо як це зробити пішніше)
+     * 1. Що ми проскролили до відповідної точки (window.scrollY + window.innerHeight >= контейнер.scrollHeight - константа)
      * 2. Що кількість постів, які ми вже раніше загрузили є меншою, ніж загальна кількість постів в юзера
      * 3. Що ми в даний момент не знаходимось в процесі загрузки постів
      * 
      * Якщо всі умови справджуються можна викликати функцію загрузки постів
      */
-    function handleScroll(event) {
-        const shouldFetchNextPage = true;
+    function handleScroll() {
+        const reachedScrollPoint = window.scrollY + window.innerHeight >= postsContainer.scrollHeight - POSTS_SECTION_SCROLL_THRESHOLD;
 
-        console.log("postsResult ->", postsResult);
-
-        if (shouldFetchNextPage && !fetchingPosts && postsResult.posts.length < postsResult.totalElements) {
+        if (
+            reachedScrollPoint && 
+            !state.fetchingPosts && 
+            state.postsResult.posts.length < state.postsResult.totalElements
+        ) {
             fetchPostsLocal();
         }
     }
-
     /**
      * Додаткова функція, яка викликаю функцію загрузки постів
      * Але ще заоодно і змінює значення змінної, що відповідає те чи ми знаходимось в процесі загрузки
      */
     function fetchPostsLocal() {
         console.log("Started posts fetch");
-        fetchingPosts = true;
+        state.fetchingPosts = true;
         fetchPosts(onSuccess, onFailure);
     }
-
     /**
      * Функція, що буде обробляти успішну загрузку постів
      * Тут ми:
@@ -50,32 +52,28 @@ function createPostsSectionObject() {
     function onSuccess(result) {
         const { posts, totalElements } = result;
 
-        postsResult.posts = postsResult.posts.concat(posts);
-        postsResult.totalElements = totalElements;
+        state.postsResult.posts = state.postsResult.posts.concat(posts);
+        state.postsResult.totalElements = totalElements;
+        state.fetchingPosts = false;
 
-        updatePostsContainer(posts);
-
-        fetchingPosts = false;
+        createAndAppendPostsElements(posts);
         console.log("Finished posts fetch");
     }
-
     /**
      * Функція, що буде обробляти невдалу загрузку постів
      * Тут ми можемо показати якесь повідомлення про помилку
      * Але обов'язково змінюємо значення змінної, що відповідає те чи ми знаходимось в процесі загрузки назад на false
      */
     function onFailure(error) {
-        fetchingPosts = false;
+        state.fetchingPosts = false;
+        console.error("Fetch failed with:", error);
     }
-
     /**
-     * Окрема функція, яка створює HTML постів
+     * Окрема функція, що створює HTML постів
      */
-    function updatePostsContainer(posts) {
+    function createAndAppendPostsElements(posts) {
         posts.forEach((post) => {
-            const postElement = createPostElement(post);
-
-            postsContainer.appendChild(postElement);
+            postsContainer.appendChild(createPostElement(post));
         });
     }
 
@@ -109,8 +107,7 @@ function createPostElement(post) {
 
     container.appendChild(titleContainer);
     container.appendChild(imgContainer);
+    container.style.padding = "20px 0";
 
     return container;
 }
-
-export default createPostsSectionObject;

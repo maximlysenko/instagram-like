@@ -15,12 +15,12 @@ export async function fetchPosts(onSuccess, onFailure) {
         await new Promise((resolve) => {
             setTimeout(() => {
                 resolve();
-            }, 2000);
+            }, 1500);
         });
 
         const posts = [];
 
-        for (let i = 0; i < 10; i++) {
+        for (let i = 0; i < 20; i++) {
             posts[i] = {
                 id: i + 1,
                 imageUrl: "",
@@ -30,7 +30,7 @@ export async function fetchPosts(onSuccess, onFailure) {
 
         onSuccess({
             posts,
-            totalElements: 30,
+            totalElements: 100,
         });
     } catch (e) {
         onFailure(e);

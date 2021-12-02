@@ -1,0 +1,1 @@
+export const POSTS_SECTION_SCROLL_THRESHOLD = 600;

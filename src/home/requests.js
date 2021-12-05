@@ -23,7 +23,7 @@ export async function fetchPosts(onSuccess, onFailure) {
         for (let i = 0; i < 20; i++) {
             posts[i] = {
                 id: i + 1,
-                imageUrl: "",
+                imageUrl: "https://",
                 text: `My post #${i + 1}`,
             };
         }

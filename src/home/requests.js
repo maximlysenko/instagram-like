@@ -1,8 +1,13 @@
 import { fetch } from "../utils";
+import { API_URL } from "../constants/api";
 
 export async function fetchUser(onSuccess, onFailure) {
     try {
-        const user = await fetch("https://api.github.com/users/maximlysenko123");
+        const user = await fetch(`${API_URL}/users/current`, {
+            headers: {
+                "Authorization": `Bearer ${localStorage.getItem("auth")}`,
+            },
+        });
 
         onSuccess(user);
     } catch (e) {

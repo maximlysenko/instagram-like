@@ -1,11 +1,16 @@
 import createHeaderObject from "./header";
 import createPostsSectionObject from "./posts";
 import createNewPostSectionObject from "./create-post";
+import { router, user } from "../index";
+import { fetchUser } from "./requests";
 
 function createHomePageObject() {
     const pageContainer = document.createElement("div");
     pageContainer.style.position = "relative"; // <-- MUST be CSS class
-    const headerSectionObject = createHeaderObject(handleNewPostButtonClick);
+    const headerSectionObject = createHeaderObject({
+        onNewPostClick: handleNewPostButtonClick,
+        onSignOutClick: handleSignOutClick,
+    });
     const postsSectionObject = createPostsSectionObject();
     
     function handleNewPostButtonClick() {
@@ -19,8 +24,21 @@ function createHomePageObject() {
         }
     }
 
+    function handleSignOutClick() {
+        localStorage.removeItem("auth");
+        router.go("sign-in");
+    }
+
     return {
         render(container) {
+            fetchUser(
+                (fetchedUser) => {
+                    user = fetchedUser;
+                }, (e) => {
+                    console.log(e);
+                },
+            );
+            console.log("user", user);
             headerSectionObject.render(pageContainer);
             postsSectionObject.render(pageContainer);
             container.appendChild(pageContainer);

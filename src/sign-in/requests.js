@@ -1,21 +1,23 @@
 import { fetch } from "../utils";
+import { API_URL } from "../constants/api";
 
 export async function signIn({ email, password }, onSuccess, onFailure) {
     try {
-        const signInResponse = await fetch("", {
+        const signInResponse = await fetch(`${API_URL}/auth/sign-in`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
             body: JSON.stringify({
                 email,
                 password,
             }),
         });
-        // Handle success
-        /* 
-            {
-                "access_token": "dklamdaljkfnkasnda"
-            }
-        */
+
+        localStorage.setItem("auth", signInResponse["access_token"]);
+        onSuccess();
     } catch (e) {
-        // Handle error
+        onFailure(e);
     }
 }
 
